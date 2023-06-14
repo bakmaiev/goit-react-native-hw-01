@@ -17,14 +17,34 @@ const RegistrationScreen = () => {
         style={styles.backgroundImage}
       />
       <View style={styles.registrationForm}>
-        <View style={styles.avatarWrapper}></View>
+        <View style={styles.avatarWrapper}>
+          <TouchableOpacity style={styles.addAvatarBtn}>
+            <Image source={require("../../assets/add.png")} />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.formTitle}>Реєстрація</Text>
-        <TextInput placeholder="Логін" style={styles.formInput}></TextInput>
-        <TextInput
-          placeholder="Адреса електронної пошти"
-          style={styles.formInput}
-        ></TextInput>
-        <TextInput placeholder="Пароль" style={styles.formInput}></TextInput>
+        <View style={styles.inputList}>
+          <TextInput placeholder="Логін" style={styles.formInput}></TextInput>
+          <TextInput
+            placeholder="Адреса електронної пошти"
+            style={styles.formInput}
+          ></TextInput>
+          <View>
+            <TextInput
+              placeholder="Пароль"
+              style={styles.formInput}
+            ></TextInput>
+            <TouchableOpacity style={styles.passShowBtn}>
+              <Text
+                style={{
+                  color: "#1B4371",
+                }}
+              >
+                Показати
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <TouchableOpacity style={styles.formBtn}>
           <Text style={styles.textFormBtn}>Зареєстуватися</Text>
         </TouchableOpacity>
@@ -67,6 +87,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
   },
+  addAvatarBtn: {
+    position: "absolute",
+    bottom: 14,
+    left: 107,
+  },
   formTitle: {
     marginBottom: 32,
     fontFamily: "Roboto",
@@ -79,10 +104,13 @@ const styles = StyleSheet.create({
 
     color: "#212121",
   },
-  formInput: {
+  inputList: {
     width: "100%",
+    gap: 16,
+    marginBottom: 43,
+  },
+  formInput: {
     height: 50,
-    marginBottom: 16,
     padding: 16,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
@@ -93,7 +121,6 @@ const styles = StyleSheet.create({
   formBtn: {
     width: "100%",
     height: 51,
-    marginTop: 27,
     marginBottom: 16,
     backgroundColor: "#FF6C00",
     alignItems: "center",
@@ -105,6 +132,11 @@ const styles = StyleSheet.create({
   },
   signInBtn: {
     marginBottom: 78,
+  },
+  passShowBtn: {
+    position: "absolute",
+    right: 15,
+    top: 15,
   },
 });
 

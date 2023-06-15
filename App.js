@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import RegistrationScreen from "./screens/RegistrationScreen/RegistrationScreen";
+import LoginScreen from "./screens/LoginScreen/LoginScreen";
+
 import { useFonts } from "expo-font";
 
 export default function App() {
@@ -12,7 +14,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <RegistrationScreen />
+      {/* <RegistrationScreen /> */}
+      <LoginScreen />
       <StatusBar style="auto" />
     </View>
   );

@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Image,
   Text,
   View,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
+import Svg, { Circle, Path } from "react-native-svg";
 
 const RegistrationScreen = () => {
   return (
@@ -19,37 +19,51 @@ const RegistrationScreen = () => {
       <View style={styles.registrationForm}>
         <View style={styles.avatarWrapper}>
           <TouchableOpacity style={styles.addAvatarBtn}>
-            <Image source={require("../../assets/add.png")} />
+            <Svg
+              width="25"
+              height="25"
+              viewBox="0 0 25 25"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <Circle
+                cx="12.5"
+                cy="12.5"
+                r="12"
+                fill="white"
+                stroke="#FF6C00"
+              ></Circle>
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                fill="#FF6C00"
+              ></Path>
+            </Svg>
           </TouchableOpacity>
         </View>
         <Text style={styles.formTitle}>Реєстрація</Text>
         <View style={styles.inputList}>
-          <TextInput placeholder="Логін" style={styles.formInput}></TextInput>
+          <TextInput placeholder="Логін" style={[styles.formInput]}></TextInput>
           <TextInput
             placeholder="Адреса електронної пошти"
-            style={styles.formInput}
+            style={[styles.formInput]}
           ></TextInput>
           <View>
             <TextInput
               placeholder="Пароль"
-              style={styles.formInput}
+              style={[styles.formInput]}
             ></TextInput>
             <TouchableOpacity style={styles.passShowBtn}>
-              <Text
-                style={{
-                  color: "#1B4371",
-                }}
-              >
-                Показати
-              </Text>
+              <Text style={styles.textPassShowBtn}>Показати</Text>
             </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity style={styles.formBtn}>
           <Text style={styles.textFormBtn}>Зареєстуватися</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.signInBtn}>
-          <Text style={{ color: "#1B4371" }}>Вже є акаунт? Увійти</Text>
+        <TouchableOpacity style={styles.logInBtn}>
+          <Text style={styles.textLogInBtn}>Вже є акаунт? Увійти</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -68,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   registrationForm: {
-    position: "relative",
+    // position: "relative",
     width: "100%",
     marginTop: "auto",
     paddingLeft: 16,
@@ -79,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatarWrapper: {
-    position: "relative",
+    // position: "relative",
     width: 120,
     height: 120,
     marginTop: -60,
@@ -94,9 +108,7 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     marginBottom: 32,
-    fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -118,6 +130,10 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
   },
+  inputFocused: {
+    borderColor: "#FF6C00",
+    backgroundColor: "#FFFFFF",
+  },
   formBtn: {
     width: "100%",
     height: 51,
@@ -129,14 +145,29 @@ const styles = StyleSheet.create({
   },
   textFormBtn: {
     color: "#FFFFFF",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
   },
-  signInBtn: {
+  logInBtn: {
     marginBottom: 78,
   },
   passShowBtn: {
     position: "absolute",
     right: 15,
     top: 15,
+  },
+  textLogInBtn: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+  },
+  textPassShowBtn: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
 });
 

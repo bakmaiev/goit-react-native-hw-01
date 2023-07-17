@@ -41,7 +41,7 @@ const RegistrationScreen = () => {
       Alert.alert("Заповніть всі поля форми!");
       return;
     }
-    navigation.navigate("Posts");
+    navigation.navigate("Home");
   };
 
   return (

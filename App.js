@@ -1,13 +1,16 @@
 import "react-native-gesture-handler";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet, TouchableOpacity } from "react-native";
 import RegistrationScreen from "./screens/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import { useFonts } from "expo-font";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import PostsScreen from "./screens/PostsScreen/PostsScreen";
+import { Feather } from "@expo/vector-icons";
+import LogoutBtn from "./components/LogoutBtn";
+import Home from "./screens/Home/Home";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,7 +28,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName="Posts"
+        initialRouteName="Home"
         screenOptions={styles.container}
       >
         <MainStack.Screen
@@ -39,9 +42,14 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <MainStack.Screen
-          name="Posts"
-          component={PostsScreen}
-          options={{ headerTitle: "Публікації" }}
+          name="Home"
+          component={Home}
+          // options={{
+          //   headerLeft: false,
+          //   headerTitle: "Публікації",
+          //   headerRight: () => <LogoutBtn />,
+          // }}
+          options={{ headerShown: false }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

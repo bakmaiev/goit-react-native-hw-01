@@ -2,23 +2,15 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, StyleSheet } from "react-native";
 import { Image } from "react-native-svg";
-import PostsScreen from "../PostsScreen/PostsScreen";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
 import LogoutBtn from "../../components/LogoutBtn";
+import PostsScreen from "../PostsScreen/PostsScreen";
+import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
 
 function Profile() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Profile!</Text>
-    </View>
-  );
-}
-
-function CreatePostsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>CreatePostsScreen!</Text>
     </View>
   );
 }
@@ -44,7 +36,7 @@ const Home = () => {
         component={CreatePostsScreen}
         options={{
           headerLeft: false,
-          headerTitle: "CreatePostsScreen",
+          headerTitle: "Створити публікацію",
           headerRight: () => <LogoutBtn />,
           tabBarIcon: () => <Ionicons name="add" size={24} color="white" />,
           tabBarIconStyle: {
@@ -72,12 +64,10 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  tabOptions: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  tabOptions: {
     tabBarShowLabel: false,
     tabBarActiveTintColor: "#ffffff",
     tabBarInactiveTintColor: "#212121",
@@ -87,14 +77,6 @@ const styles = StyleSheet.create({
       paddingHorizontal: 82,
     },
   },
-  // addBtn: {
-  //   borderRadius: 30,
-  //   paddingTop: 8,
-  //   paddingBottom: 8,
-  //   paddingLeft: 23,
-  //   paddingRight: 23,
-  //   backgroundColor: "#FF6C00",
-  // },
 });
 
 export default Home;

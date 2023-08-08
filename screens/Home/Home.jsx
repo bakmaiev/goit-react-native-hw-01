@@ -37,7 +37,6 @@ const Home = () => {
         options={{
           headerLeft: false,
           headerTitle: "Створити публікацію",
-          headerRight: () => <LogoutBtn />,
           headerLeft: () => <BackBtn />,
           tabBarIcon: () => <Ionicons name="add" size={24} color="white" />,
           tabBarIconStyle: {
@@ -48,6 +47,7 @@ const Home = () => {
             backgroundColor: "#FF6C00",
             borderRadius: 30,
           },
+          tabBarStyle: { display: "none" },
         }}
       />
       <Tabs.Screen

@@ -1,11 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, StyleSheet } from "react-native";
-import { Image } from "react-native-svg";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import LogoutBtn from "../../components/LogoutBtn";
 import PostsScreen from "../PostsScreen/PostsScreen";
 import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
+import BackBtn from "../../components/BackBtn";
 
 function Profile() {
   return (
@@ -38,6 +38,7 @@ const Home = () => {
           headerLeft: false,
           headerTitle: "Створити публікацію",
           headerRight: () => <LogoutBtn />,
+          headerLeft: () => <BackBtn />,
           tabBarIcon: () => <Ionicons name="add" size={24} color="white" />,
           tabBarIconStyle: {
             width: 70,

@@ -6,14 +6,7 @@ import LogoutBtn from "../../components/LogoutBtn";
 import PostsScreen from "../PostsScreen/PostsScreen";
 import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
 import BackBtn from "../../components/BackBtn";
-
-function Profile() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Profile!</Text>
-    </View>
-  );
-}
+import ProfileScreen from "../ProfileScreen/ProfileScreen";
 
 const Home = () => {
   const Tabs = createBottomTabNavigator();
@@ -52,10 +45,11 @@ const Home = () => {
       />
       <Tabs.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileScreen}
         options={{
+          headerShown: false,
           headerLeft: false,
-          headerTitle: "Profile",
+          headerTitle: "ProfileScreen",
           headerRight: () => <LogoutBtn />,
           tabBarIcon: () => <Feather name="user" size={24} color="#BDBDBD" />,
         }}

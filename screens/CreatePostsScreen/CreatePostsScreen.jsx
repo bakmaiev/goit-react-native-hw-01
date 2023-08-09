@@ -6,9 +6,11 @@ import { StyleSheet } from "react-native";
 import { View, Image, Svg, Text } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ClipPath, Defs, G, Path, Rect } from "react-native-svg";
+import { useState } from "react";
 
 const CreatePostsScreen = () => {
+  const [newPhoto, setNewPhoto] = useState(true);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -18,15 +20,16 @@ const CreatePostsScreen = () => {
       >
         <View>
           <View style={styles.imgWrapper}>
-            <Image
-              resizeMode="cover"
-              // source={require("../../assets/content-img.png")}
-              style={styles.img}
-            />
-            <TouchableOpacity style={[styles.addImgBtn]}>
-              <MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
+            {newPhoto ? (
+              <Image
+                source={require("../../assets/content-img.png")}
+                style={styles.img}
+              />
+            ) : null}
           </View>
+          <TouchableOpacity style={[styles.addImgBtn]}>
+            <MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
           <Text style={styles.imgDescr}>Завантажте фото</Text>
           <View style={styles.contentForm}>
             <TextInput style={styles.input} placeholder="Назва..."></TextInput>
@@ -70,10 +73,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 8,
   },
-  // img: { width: "100%", height: "100%", borderRadius: 8 },
+  img: {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
+  },
   addImgBtn: {
-    justifyContent: "center",
-    alignItems: "center",
     width: 60,
     height: 60,
     backgroundColor: "#ffffff",

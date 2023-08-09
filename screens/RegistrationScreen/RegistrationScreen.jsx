@@ -14,6 +14,7 @@ import {
   Alert,
 } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import { Feather } from "@expo/vector-icons";
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
@@ -23,6 +24,7 @@ const RegistrationScreen = () => {
   const [password, setPassword] = useState("");
   const [focusedInput, setFocusedinput] = useState(null);
   const [secureText, setSecureText] = useState(true);
+  const [userAvatar, setUserAvatar] = useState(false);
 
   const handleFocus = (placeholder) => {
     setFocusedinput(placeholder);
@@ -34,6 +36,10 @@ const RegistrationScreen = () => {
 
   const toggleSecureText = () => {
     secureText ? setSecureText(false) : setSecureText(true);
+  };
+
+  const handleUserAvatarBtn = () => {
+    !userAvatar ? setUserAvatar(true) : setUserAvatar(false);
   };
 
   const handleSignUp = () => {
@@ -57,7 +63,10 @@ const RegistrationScreen = () => {
         />
         <View style={styles.registrationForm}>
           <View style={styles.avatarWrapper}>
-            <TouchableOpacity style={styles.addAvatarBtn}>
+            {/* <TouchableOpacity
+              style={styles.addAvatarBtn}
+              onPress={handleUserAvatarBtn}
+            >
               <Svg
                 width="25"
                 height="25"
@@ -73,13 +82,75 @@ const RegistrationScreen = () => {
                   stroke="#FF6C00"
                 ></Circle>
                 <Path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M6 13V19V13V12H6H12V12V6V12H12H18V12V13V19V13H18H12V13V19V13H6Z"
                   fill="#FF6C00"
                 ></Path>
               </Svg>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {userAvatar ? (
+              <>
+                <TouchableOpacity
+                  style={styles.addAvatarBtn}
+                  onPress={handleUserAvatarBtn}
+                >
+                  <Svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <Circle
+                      cx="12.5"
+                      cy="12.5"
+                      r="12"
+                      fill="white"
+                      stroke="#E8E8E8"
+                    />
+                    <Path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                      fill="#BDBDBD"
+                      transform="rotate(-45 12.5 12.5)"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+                <Image
+                  style={styles.avatar}
+                  source={require("../../assets/avatar.jpg")}
+                />
+              </>
+            ) : (
+              <TouchableOpacity
+                style={styles.addAvatarBtn}
+                onPress={handleUserAvatarBtn}
+              >
+                <Svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Circle
+                    cx="12.5"
+                    cy="12.5"
+                    r="12"
+                    fill="white"
+                    stroke="#FF6C00"
+                  ></Circle>
+                  <Path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                    fill="#FF6C00"
+                  ></Path>
+                </Svg>
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={styles.formTitle}>Реєстрація</Text>
           <View style={styles.inputList}>
@@ -163,6 +234,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatarWrapper: {
+    position: "relative",
     width: 120,
     height: 120,
     marginTop: -60,
@@ -170,8 +242,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
   },
+  avatar: {
+    borderRadius: 16,
+  },
   addAvatarBtn: {
     position: "absolute",
+    zIndex: 100,
     bottom: 14,
     left: 107,
   },

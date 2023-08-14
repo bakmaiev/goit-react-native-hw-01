@@ -11,6 +11,8 @@ import PostsScreen from "./screens/PostsScreen/PostsScreen";
 import { Feather } from "@expo/vector-icons";
 import LogoutBtn from "./components/LogoutBtn";
 import Home from "./screens/Home/Home";
+import CommentsScreen from "./screens/CommentsScreen/CommentsScreen";
+import BackBtn from "./components/BackBtn";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -50,6 +52,15 @@ export default function App() {
           //   headerRight: () => <LogoutBtn />,
           // }}
           options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={{
+            headerLeft: false,
+            headerTitle: "Коментарі",
+            headerLeft: () => <BackBtn />,
+          }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

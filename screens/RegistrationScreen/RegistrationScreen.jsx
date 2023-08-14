@@ -63,32 +63,6 @@ const RegistrationScreen = () => {
         />
         <View style={styles.registrationForm}>
           <View style={styles.avatarWrapper}>
-            {/* <TouchableOpacity
-              style={styles.addAvatarBtn}
-              onPress={handleUserAvatarBtn}
-            >
-              <Svg
-                width="25"
-                height="25"
-                viewBox="0 0 25 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <Circle
-                  cx="12.5"
-                  cy="12.5"
-                  r="12"
-                  fill="white"
-                  stroke="#FF6C00"
-                ></Circle>
-                <Path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M6 13V19V13V12H6H12V12V6V12H12H18V12V13V19V13H18H12V13V19V13H6Z"
-                  fill="#FF6C00"
-                ></Path>
-              </Svg>
-            </TouchableOpacity> */}
             {userAvatar ? (
               <>
                 <TouchableOpacity
@@ -247,7 +221,6 @@ const styles = StyleSheet.create({
   },
   addAvatarBtn: {
     position: "absolute",
-    zIndex: 100,
     bottom: 14,
     left: 107,
   },

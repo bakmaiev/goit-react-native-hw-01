@@ -7,16 +7,31 @@ import { View, Image, Svg, Text } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const CreatePostsScreen = () => {
-  const [newPhoto, setNewPhoto] = useState(true);
+  const navigation = useNavigation();
+
+  const [name, setName] = useState("");
+  const [locality, setLocality] = useState("");
+  const [newPhoto, setNewPhoto] = useState(false);
+
+  const handleAddPhotoBtn = () => {
+    !newPhoto ? setNewPhoto(true) : setNewPhoto(false);
+  };
+
+  const handleSubmit = () => {
+    navigation.goBack();
+  };
+
+  const areInputsFilled = locality !== "" && name !== "" && newPhoto;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
-        keyboardVerticalOffset={510}
+        // keyboardVerticalOffset={510}
       >
         <View>
           <View style={styles.imgWrapper}>
@@ -26,13 +41,46 @@ const CreatePostsScreen = () => {
                 style={styles.img}
               />
             ) : null}
+            <TouchableOpacity
+              onPress={handleAddPhotoBtn}
+              style={[
+                styles.addImgBtn,
+                newPhoto
+                  ? {
+                      backgroundColor: "rgba(255,255,255, 0.3)",
+                    }
+                  : null,
+              ]}
+            >
+              <MaterialIcons
+                name="camera-alt"
+                size={24}
+                color="#BDBDBD"
+                style={[
+                  newPhoto
+                    ? {
+                        color: "#FFFFFF",
+                      }
+                    : {
+                        color: "#BDBDBD",
+                      },
+                ]}
+              />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={[styles.addImgBtn]}>
-            <MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-          <Text style={styles.imgDescr}>Завантажте фото</Text>
+
+          {newPhoto ? (
+            <Text style={styles.imgDescr}>Редагувати фото</Text>
+          ) : (
+            <Text style={styles.imgDescr}>Завантажте фото</Text>
+          )}
           <View style={styles.contentForm}>
-            <TextInput style={styles.input} placeholder="Назва..."></TextInput>
+            <TextInput
+              style={styles.input}
+              value={name}
+              placeholder="Назва..."
+              onChangeText={setName}
+            ></TextInput>
             <View style={styles.locationInput}>
               <Feather
                 style={styles.mapPin}
@@ -42,11 +90,31 @@ const CreatePostsScreen = () => {
               />
               <TextInput
                 style={(styles.input, styles.mapInput)}
+                value={locality}
                 placeholder="Місцевість..."
+                onChangeText={setLocality}
               ></TextInput>
             </View>
-            <TouchableOpacity style={styles.formBtn}>
-              <Text style={styles.textFormBtn}>Опубліковати</Text>
+            <TouchableOpacity
+              disabled={areInputsFilled ? false : true}
+              style={[
+                styles.formBtn,
+                areInputsFilled && {
+                  backgroundColor: "#FF6C00",
+                },
+              ]}
+              onPress={handleSubmit}
+            >
+              <Text
+                style={[
+                  styles.textFormBtn,
+                  areInputsFilled && {
+                    color: "#FFFFFF",
+                  },
+                ]}
+              >
+                Опубліковати
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -74,7 +142,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   img: {
-    position: "relative",
+    position: "absolute",
     width: "100%",
     height: "100%",
     borderRadius: 8,
@@ -82,9 +150,12 @@ const styles = StyleSheet.create({
   addImgBtn: {
     width: 60,
     height: 60,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 50,
   },
+
   imgDescr: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,

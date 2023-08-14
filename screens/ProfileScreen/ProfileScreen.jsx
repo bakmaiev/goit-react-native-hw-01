@@ -15,8 +15,23 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Svg, { Circle, Path } from "react-native-svg";
+import LogoutBtn from "../../components/LogoutBtn";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
+
+  const [userAvatar, setUserAvatar] = useState(false);
+
+  const handleUserAvatarBtn = () => {
+    !userAvatar ? setUserAvatar(true) : setUserAvatar(false);
+  };
+
+  handleCommentsBtn = () => {
+    navigation.navigate("Comments");
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -28,32 +43,74 @@ const ProfileScreen = () => {
           source={require("../../assets/background.jpg")}
           style={styles.backgroundImage}
         />
-        <View style={styles.registrationForm}>
+
+        <View style={styles.profileLayout}>
           <View style={styles.avatarWrapper}>
-            <TouchableOpacity style={styles.addAvatarBtn}>
-              <Svg
-                width="25"
-                height="25"
-                viewBox="0 0 25 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            {userAvatar ? (
+              <>
+                <Image
+                  style={styles.avatar}
+                  source={require("../../assets/avatar.jpg")}
+                />
+                <TouchableOpacity
+                  style={styles.addAvatarBtn}
+                  onPress={handleUserAvatarBtn}
+                >
+                  <Svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <Circle
+                      cx="12.5"
+                      cy="12.5"
+                      r="12"
+                      fill="white"
+                      stroke="#E8E8E8"
+                    />
+                    <Path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                      fill="#BDBDBD"
+                      transform="rotate(-45 12.5 12.5)"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity
+                style={styles.addAvatarBtn}
+                onPress={handleUserAvatarBtn}
               >
-                <Circle
-                  cx="12.5"
-                  cy="12.5"
-                  r="12"
-                  fill="white"
-                  stroke="#FF6C00"
-                ></Circle>
-                <Path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
-                  fill="#FF6C00"
-                ></Path>
-              </Svg>
-            </TouchableOpacity>
+                <Svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Circle
+                    cx="12.5"
+                    cy="12.5"
+                    r="12"
+                    fill="white"
+                    stroke="#FF6C00"
+                  ></Circle>
+                  <Path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z"
+                    fill="#FF6C00"
+                  ></Path>
+                </Svg>
+              </TouchableOpacity>
+            )}
           </View>
+          <LogoutBtn style={styles.logout} />
+
           <Text style={styles.formTitle}>Natali Romanova</Text>
           <View style={styles.imgWrapper}>
             <Image
@@ -64,7 +121,8 @@ const ProfileScreen = () => {
           </View>
           <Text style={styles.imgDescr}>Ліс</Text>
           <View style={{ flexDirection: "row", gap: 24, marginBottom: 32 }}>
-            <View
+            <TouchableOpacity
+              onPress={handleCommentsBtn}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -81,8 +139,8 @@ const ProfileScreen = () => {
               >
                 8
               </Text>
-            </View>
-            <View
+            </TouchableOpacity>
+            <TouchableOpacity
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -99,8 +157,8 @@ const ProfileScreen = () => {
               >
                 153
               </Text>
-            </View>
-            <View
+            </TouchableOpacity>
+            <TouchableOpacity
               style={{
                 marginLeft: "auto",
                 flexDirection: "row",
@@ -124,7 +182,7 @@ const ProfileScreen = () => {
               >
                 Ukraine
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -143,7 +201,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     flex: 1,
   },
-  registrationForm: {
+  profileLayout: {
+    position: "relative",
     width: "100%",
     marginTop: "auto",
     paddingLeft: 16,
@@ -153,6 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   avatarWrapper: {
+    position: "relative",
     width: 120,
     height: 120,
     marginTop: -60,
@@ -160,6 +220,9 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
     backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  avatar: {
     borderRadius: 16,
   },
   addAvatarBtn: {
@@ -178,7 +241,6 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
   imgWrapper: {
-    // paddingTop: 32,
     width: "100%",
     height: 240,
     backgroundColor: "#F6F6F6",
@@ -193,61 +255,12 @@ const styles = StyleSheet.create({
     color: "#212121",
     marginBottom: 8,
   },
-
-  //
-  //   inputList: {
-  //     width: "100%",
-  //     gap: 16,
-  //     marginBottom: 43,
-  //   },
-  //   formInput: {
-  //     height: 50,
-  //     padding: 16,
-  //     backgroundColor: "#F6F6F6",
-  //     borderWidth: 1,
-  //     borderStyle: "solid",
-  //     borderColor: "#E8E8E8",
-  //     borderRadius: 8,
-  //   },
-  //   inputFocused: {
-  //     borderColor: "#FF6C00",
-  //     backgroundColor: "#FFFFFF",
-  //   },
-  //   formBtn: {
-  //     width: "100%",
-  //     height: 51,
-  //     marginBottom: 16,
-  //     backgroundColor: "#FF6C00",
-  //     alignItems: "center",
-  //     justifyContent: "center",
-  //     borderRadius: 100,
-  //   },
-  //   textFormBtn: {
-  //     color: "#FFFFFF",
-  //     fontFamily: "Roboto-Regular",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //   },
-  //   logInBtn: {
-  //     marginBottom: 78,
-  //   },
-  //   passShowBtn: {
-  //     position: "absolute",
-  //     right: 15,
-  //     top: 15,
-  //   },
-  //   textLogInBtn: {
-  //     fontFamily: "Roboto-Regular",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //     color: "#1B4371",
-  //   },
-  //   textPassShowBtn: {
-  //     fontFamily: "Roboto-Regular",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //     color: "#1B4371",
-  //   },
+  logout: {
+    position: "absolute",
+    top: 22,
+    right: 16,
+    marginRight: 0,
+  },
 });
 
 export default ProfileScreen;

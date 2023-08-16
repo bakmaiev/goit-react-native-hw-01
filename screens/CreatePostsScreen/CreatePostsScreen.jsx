@@ -22,24 +22,36 @@ const CreatePostsScreen = () => {
 
   const [name, setName] = useState("");
   const [locality, setLocality] = useState("");
-  const [newPhoto, setNewPhoto] = useState(false);
+  const [newPhoto, setNewPhoto] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      await MediaLibrary.requestCameraRollPermissionsAsync();
+      try {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        await MediaLibrary.requestCameraRollPermissionsAsync();
 
-      setHasPermission(status === "granted");
+        setHasPermission(status === "granted");
+      } catch (error) {
+        console.error("Error getting camera permissions:", error);
+      }
     })();
   }, []);
 
   const handleAddPhotoBtn = async () => {
-    if (cameraRef) {
-      const photo = await cameraRef.takePictureAsync();
-      setNewPhoto(photo.uri);
+    try {
+      if (cameraRef) {
+        const photo = await cameraRef.takePictureAsync();
+        setNewPhoto(photo.uri);
+      }
+    } catch (error) {
+      console.error("Error getting camera permissions:", error);
     }
+  };
+
+  const handleEditPhoto = () => {
+    setNewPhoto(false);
   };
 
   const handleSubmit = () => {
@@ -53,19 +65,19 @@ const CreatePostsScreen = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
-        // keyboardVerticalOffset={510}
       >
         <View>
           <View style={styles.imgWrapper}>
             {newPhoto ? (
               <Image source={{ uri: newPhoto }} style={styles.img} />
-            ) : null}
-            <Camera
-              style={styles.cameraPreview}
-              ref={(ref) => setCameraRef(ref)}
-              type={Camera.Constants.Type.back}
-              autoFocus={Camera.Constants.AutoFocus.on}
-            />
+            ) : (
+              <Camera
+                style={styles.cameraPreview}
+                ref={(ref) => setCameraRef(ref)}
+                type={Camera.Constants.Type.back}
+                autoFocus={Camera.Constants.AutoFocus.on}
+              />
+            )}
             <TouchableOpacity
               onPress={handleAddPhotoBtn}
               style={[
@@ -80,32 +92,20 @@ const CreatePostsScreen = () => {
               <MaterialIcons
                 name="camera-alt"
                 size={24}
-                color="#BDBDBD"
-                style={[
-                  newPhoto
-                    ? {
-                        color: "#FFFFFF",
-                      }
-                    : {
-                        color: "#BDBDBD",
-                      },
-                ]}
+                color={newPhoto ? "#FFFFFF" : "#BDBDBD"}
               />
             </TouchableOpacity>
           </View>
-
-          {newPhoto ? (
-            <Text style={styles.imgDescr}>Редагувати фото</Text>
-          ) : (
-            <Text style={styles.imgDescr}>Завантажте фото</Text>
-          )}
+          <Text style={styles.imgDescr} onPress={handleEditPhoto}>
+            {newPhoto ? "Редагувати фото" : "Завантажте фото"}
+          </Text>
           <View style={styles.contentForm}>
             <TextInput
               style={styles.input}
               value={name}
               placeholder="Назва..."
               onChangeText={setName}
-            ></TextInput>
+            />
             <View style={styles.locationInput}>
               <Feather
                 style={styles.mapPin}
@@ -114,14 +114,14 @@ const CreatePostsScreen = () => {
                 color="#BDBDBD"
               />
               <TextInput
-                style={(styles.input, styles.mapInput)}
+                style={styles.mapInput}
                 value={locality}
                 placeholder="Місцевість..."
                 onChangeText={setLocality}
-              ></TextInput>
+              />
             </View>
             <TouchableOpacity
-              disabled={areInputsFilled ? false : true}
+              disabled={!areInputsFilled}
               style={[
                 styles.formBtn,
                 areInputsFilled && {
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
   },
   imgWrapper: {
     position: "relative",
-    // paddingTop: 32,
     width: "100%",
     height: 240,
     backgroundColor: "#F6F6F6",
@@ -172,7 +171,13 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 8,
   },
+  cameraPreview: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
+  },
   addImgBtn: {
+    position: "absolute",
     width: 60,
     height: 60,
     backgroundColor: "#FFFFFF",
@@ -180,7 +185,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
   },
-
   imgDescr: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
@@ -188,18 +192,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   contentForm: {},
-  name: {
-    fontFamily: "Roboto-Bold",
-    fontSize: 13,
-    lineHeight: 15,
-    color: "#212121",
-  },
-  email: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 11,
-    lineHeight: 13,
-    color: "rgba(33, 33, 33, 0.8)",
-  },
   input: {
     height: 50,
     borderBottomWidth: 1,
@@ -211,10 +203,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   locationInput: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 32,
   },
   mapInput: {
-    width: "100%",
+    flex: 1,
     height: 50,
     paddingLeft: 28,
     fontSize: 16,

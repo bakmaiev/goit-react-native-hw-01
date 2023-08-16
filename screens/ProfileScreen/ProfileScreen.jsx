@@ -1,7 +1,5 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
-import { Keyboard } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
 import {
   StyleSheet,
   Image,
@@ -12,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Svg, { Circle, Path } from "react-native-svg";

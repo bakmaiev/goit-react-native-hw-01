@@ -1,12 +1,20 @@
-import React from "react";
-import { TouchableWithoutFeedback } from "react-native";
-import { KeyboardAvoidingView } from "react-native";
-import { Keyboard } from "react-native";
-import { StyleSheet } from "react-native";
-import { View, Image, Svg, Text } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 
 const CreatePostsScreen = () => {
@@ -15,9 +23,23 @@ const CreatePostsScreen = () => {
   const [name, setName] = useState("");
   const [locality, setLocality] = useState("");
   const [newPhoto, setNewPhoto] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
 
-  const handleAddPhotoBtn = () => {
-    !newPhoto ? setNewPhoto(true) : setNewPhoto(false);
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestCameraRollPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  const handleAddPhotoBtn = async () => {
+    if (cameraRef) {
+      const photo = await cameraRef.takePictureAsync();
+      setNewPhoto(photo.uri);
+    }
   };
 
   const handleSubmit = () => {
@@ -36,11 +58,14 @@ const CreatePostsScreen = () => {
         <View>
           <View style={styles.imgWrapper}>
             {newPhoto ? (
-              <Image
-                source={require("../../assets/content-img.png")}
-                style={styles.img}
-              />
+              <Image source={{ uri: newPhoto }} style={styles.img} />
             ) : null}
+            <Camera
+              style={styles.cameraPreview}
+              ref={(ref) => setCameraRef(ref)}
+              type={Camera.Constants.Type.back}
+              autoFocus={Camera.Constants.AutoFocus.on}
+            />
             <TouchableOpacity
               onPress={handleAddPhotoBtn}
               style={[

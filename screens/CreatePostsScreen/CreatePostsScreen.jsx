@@ -14,8 +14,10 @@ import {
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { Dimensions } from "react-native";
 
 const CreatePostsScreen = () => {
   const navigation = useNavigation();
@@ -25,28 +27,37 @@ const CreatePostsScreen = () => {
   const [newPhoto, setNewPhoto] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     (async () => {
       try {
         const { status } = await Camera.requestCameraPermissionsAsync();
-        await MediaLibrary.requestCameraRollPermissionsAsync();
+        await MediaLibrary.requestPermissionsAsync();
 
         setHasPermission(status === "granted");
       } catch (error) {
-        console.error("Error getting camera permissions:", error);
+        console.log(error);
       }
     })();
   }, []);
+
+  if (hasPermission === null) {
+    return;
+  }
+  if (hasPermission === false) {
+    return alert("No access to camera");
+  }
 
   const handleAddPhotoBtn = async () => {
     try {
       if (cameraRef) {
         const photo = await cameraRef.takePictureAsync();
-        setNewPhoto(photo.uri);
+        const asset = await MediaLibrary.createAssetAsync(photo.uri);
+        setNewPhoto(asset.uri);
       }
     } catch (error) {
-      console.error("Error getting camera permissions:", error);
+      console.log(error);
     }
   };
 
@@ -54,7 +65,22 @@ const CreatePostsScreen = () => {
     setNewPhoto(false);
   };
 
+  const getLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        const locationInfo = await Location.getCurrentPositionAsync({});
+        setLocation(locationInfo.coords);
+      } else {
+        console.log("Не надано доступ до геолокації");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = () => {
+    getLocation();
     navigation.goBack();
   };
 
@@ -79,6 +105,7 @@ const CreatePostsScreen = () => {
               />
             )}
             <TouchableOpacity
+              disabled={newPhoto}
               onPress={handleAddPhotoBtn}
               style={[
                 styles.addImgBtn,
@@ -235,6 +262,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 100,
+  },
+  mapStyle: {
+    position: "absolute",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
 

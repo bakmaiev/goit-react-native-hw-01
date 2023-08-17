@@ -13,6 +13,7 @@ import LogoutBtn from "./components/LogoutBtn";
 import Home from "./screens/Home/Home";
 import CommentsScreen from "./screens/CommentsScreen/CommentsScreen";
 import BackBtn from "./components/BackBtn";
+import MapScreen from "./screens/MapScreen/MapScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -46,11 +47,6 @@ export default function App() {
         <MainStack.Screen
           name="Home"
           component={Home}
-          // options={{
-          //   headerLeft: false,
-          //   headerTitle: "Публікації",
-          //   headerRight: () => <LogoutBtn />,
-          // }}
           options={{ headerShown: false }}
         />
         <MainStack.Screen
@@ -63,6 +59,11 @@ export default function App() {
           }}
         />
       </MainStack.Navigator>
+      <MainStack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{ headerShown: false }}
+      />
     </NavigationContainer>
   );
 }
